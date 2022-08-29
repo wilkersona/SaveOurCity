@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//manage the popup text that appears if you are entering versus leaving map edit mode
 public class MapEditingTextManager : MonoBehaviour
 {
     public GameObject editingMap;

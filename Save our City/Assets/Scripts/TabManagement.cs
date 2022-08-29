@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
+//manages what tab the GM is on, which tells things if they should display
 public class TabManagement : MonoBehaviour
 {
 	public GameObject variables;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//overhead bar manager
 public class BarOverallManager : MonoBehaviour
 {
     public GameObject[] bars;
@@ -14,6 +15,7 @@ public class BarOverallManager : MonoBehaviour
     public int[] CHM_Values = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     public int[] CHM_Graph_Reveals = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     public bool[] CHM_Caps = {false, false, false, false, false, false, false, false, false};
+    public int[] CHM_Cap_Durations = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     public string[] CHM_Names = {"Infections", "Hospitalizations", "Deaths", "Anxiety and Depression", "Misinformation and Mistrust", 
     	"Health Disparities", "R & D Expenses", "Medical Supply Shortages", "Barriers to Healthcare Access"};
     public int whichTab = 0;
@@ -25,6 +27,7 @@ public class BarOverallManager : MonoBehaviour
     }
 
     // Update is called once per frame
+    // check if need to edit
     void Update()
     {
         if (variables.GetComponent<MainVariables>().popupSignalLive && variables.GetComponent<MainVariables>().popupSignalNum==2){
@@ -35,7 +38,8 @@ public class BarOverallManager : MonoBehaviour
     			for (int i=0; i<9; i++){
     				bars[i].GetComponent<BarHandler>().editing = false;
     				variables.GetComponent<MainVariables>().CHM_Graph_Reveals[i] = CHM_Graph_Reveals[i];
-    				variables.GetComponent<MainVariables>().CHM_Caps[i] = CHM_Caps[i];
+                    variables.GetComponent<MainVariables>().CHM_Caps[i] = CHM_Caps[i];
+                    variables.GetComponent<MainVariables>().CHM_Cap_Durations[i] = CHM_Cap_Durations[i];
     				variables.GetComponent<MainVariables>().CHM_Values[i] = CHM_Values[i];
     			}
         		popupText.GetComponent<PopupManager>().textBubbles[2] = "Do you want to make your desired changes on the map?";
@@ -62,12 +66,14 @@ public class BarOverallManager : MonoBehaviour
         }
     }
 
+    //copy variables for myself
     void setInitialVariables() {
         whichTab = variables.GetComponent<MainVariables>().whichTab;
     	for (int i=0; i<9; i++){
     		CHM_Values[i] = variables.GetComponent<MainVariables>().CHM_Values[i];
     		CHM_Graph_Reveals[i] = variables.GetComponent<MainVariables>().CHM_Graph_Reveals[i];
-    		CHM_Caps[i] = variables.GetComponent<MainVariables>().CHM_Caps[i];
+            CHM_Caps[i] = variables.GetComponent<MainVariables>().CHM_Caps[i];
+            CHM_Cap_Durations[i] = variables.GetComponent<MainVariables>().CHM_Cap_Durations[i];
     	}
     }
 }

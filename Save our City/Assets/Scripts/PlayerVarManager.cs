@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//manage the things/statuses on a single player on the player chart
+//moreso the game objects?
+//also see RoleTracker
 public class PlayerVarManager : MonoBehaviour
 {
     public GameObject popup, variables;
@@ -32,7 +35,9 @@ public class PlayerVarManager : MonoBehaviour
     }
 
     public void relayMessage(int signal) {
-    	popup.GetComponent<PopupManager>().startPopup(signal);
+    	if (variables.GetComponent<MainVariables>().popupSignalNum != 18){
+    		popup.GetComponent<PopupManager>().startPopup(signal);
+    	}
     }
 
     public void shortcut() {

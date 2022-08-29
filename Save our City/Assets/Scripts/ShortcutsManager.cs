@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//three big dumb buttons that really do nothing? they're shortcuts I guess but I never used them
 public class ShortcutsManager : MonoBehaviour
 {
     public GameObject variables, tabManager;
@@ -31,4 +32,9 @@ public class ShortcutsManager : MonoBehaviour
     public void editChart(){
     	tabManager.GetComponent<TabManagement>().whichTab = 2;
     }
+    /*
+    public void editPhase(){
+        variables.GetComponent<MainVariables>().phase =;
+    }
+    */
 }

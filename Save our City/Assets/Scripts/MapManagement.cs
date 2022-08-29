@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+//A script to manage the map
+//This is more complicated than I remember just from briefly looking over it
 public class MapManagement : MonoBehaviour
 {
 	public GameObject variables;
@@ -30,7 +32,7 @@ public class MapManagement : MonoBehaviour
         //rails[5].transform = rails[5].transform * Matrix4x4.Rotate(Quaternion.Euler(0, 0, 270));
         rails[1] = rails[4];
         //rails[1].transform = rails[1].transform * Matrix4x4.Rotate(Quaternion.Euler(0, 0, 90));
-        Display();
+        //Display();
     }
 
     // Update is called once per frame
@@ -51,6 +53,7 @@ public class MapManagement : MonoBehaviour
         }
     }
 
+    //displaying all the graphics of the map
     void Display(){
     	//show and hide
     	if (variables.GetComponent<MainVariables>().whichTab == 3 || alwaysDisplayed){
@@ -128,6 +131,7 @@ public class MapManagement : MonoBehaviour
 
     }
 
+    //shortcut for determining badness
     int ProblemLevel(int PU){
     	if (PU>=30) return 3;
     	if (PU>=20) return 2;
@@ -135,6 +139,7 @@ public class MapManagement : MonoBehaviour
     	return 0;
     }
 
+    //toggle if you are editing the clouds
     public void editClouds(){
     	if (editingClouds){
     		variables.GetComponent<MainVariables>().Map_Revealed = copyArray(tempClouds);
@@ -144,6 +149,7 @@ public class MapManagement : MonoBehaviour
     	tempClouds = copyArray(variables.GetComponent<MainVariables>().Map_Revealed);
     }
 
+    //toggle a cloud tile
     void cloudShift(){
     	smokeLayer.GetComponent<Tilemap>().color = new Color(1, 1, 1, 0.6f);
     	//smokeLayer.GetComponent<TilemapRenderer>().OrderInLayer = 4;
@@ -152,27 +158,40 @@ public class MapManagement : MonoBehaviour
     		if (mousePos.x <= 0.5f && mousePos.x >= -8.5f && mousePos.y <= 4.5f && mousePos.y >= -4.5f){
     			int temp_x = (int)(mousePos.x + 8.5f);
     			int temp_y = (int)(-1 * mousePos.y + 4.5f);
-    			tempClouds[temp_y][temp_x] = !tempClouds[temp_y][temp_x];
-    			if (variables.GetComponent<MainVariables>().Buildings[temp_y][temp_x] >= 14){
-    				//this is just a temporary solution based on knowing the positions of the rails
-    				//in the future, this may need to be done dynamically
-    				//if so, check that the current rail and any extra rails connect to eachother
-    				//this data is encapulated in the variables
-    				for (int a=-2; a<3; a++){
-    					for (int b=-2; b<3; b++){
-    						if (temp_y+a<9 && temp_y+a>=0 && temp_x+b<9 && temp_x+b>=0){
-    							if (variables.GetComponent<MainVariables>().Buildings[temp_y+a][temp_x+b] >= 14 && !(a==0 && b==0)){
-    								tempClouds[temp_y+a][temp_x+b] = !tempClouds[temp_y+a][temp_x+b];
-    							}
-    						}
-    					}
-    				}
-    			}
-
+    			toggleTileAtLoc(temp_y, temp_x, false);
     		}
     	}
     }
 
+    //reveal a tile
+    public void toggleTileAtLoc(int temp_y, int temp_x, bool external){
+    	if (external){
+    		tempClouds = copyArray(variables.GetComponent<MainVariables>().Map_Revealed);
+    		if (tempClouds[temp_y][temp_x]) return;
+    	}
+		tempClouds[temp_y][temp_x] = !tempClouds[temp_y][temp_x];
+		if (variables.GetComponent<MainVariables>().Buildings[temp_y][temp_x] >= 14){
+			//this is just a temporary solution based on knowing the positions of the rails
+			//in the future, this may need to be done dynamically
+			//if so, check that the current rail and any extra rails connect to eachother
+			//this data is encapulated in the variables
+			for (int a=-2; a<3; a++){
+				for (int b=-2; b<3; b++){
+					if (temp_y+a<9 && temp_y+a>=0 && temp_x+b<9 && temp_x+b>=0){
+						if (variables.GetComponent<MainVariables>().Buildings[temp_y+a][temp_x+b] >= 14 && !(a==0 && b==0)){
+							tempClouds[temp_y+a][temp_x+b] = !tempClouds[temp_y+a][temp_x+b];
+						}
+					}
+				}
+			}
+		}
+    	if (external){
+    		variables.GetComponent<MainVariables>().Map_Revealed = copyArray(tempClouds);
+    	}
+
+    }
+
+    //copy a 9x9 array
     bool[][] copyArray(bool[][] b){
     	bool[][] temp = {
     		new bool[9],

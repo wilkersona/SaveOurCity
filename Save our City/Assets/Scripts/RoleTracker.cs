@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//manage the things/statuses on a single player on the player chart
+//moreso the game variables?
+//also see PlayerVarManager
 public class RoleTracker : MonoBehaviour
 {
     public GameObject variables;
